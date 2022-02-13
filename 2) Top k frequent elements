@@ -1,0 +1,57 @@
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        
+        //Edge case
+        vector<int> topKElements;
+        
+        if(nums.size()==1){
+            topKElements.push_back(nums[0]);
+            return topKElements;
+        }
+        
+        unordered_map<int,int> uniqueEleFreq;
+        
+        for(int i=0;i<nums.size();i++){
+            uniqueEleFreq[nums[i]]++;
+        }
+        
+        priority_queue<int> maxHeap;
+        unordered_set<int> uniqueSet;
+        
+        for(int i=0;i<nums.size();i++){
+            
+            if(uniqueSet.find(nums[i])==uniqueSet.end())
+            {
+                int eleFrequency = uniqueEleFreq[nums[i]];
+                maxHeap.push(eleFrequency);
+                uniqueSet.insert(nums[i]);
+            }
+        }
+        
+        int start = 0;
+        
+        while(start<k)
+        {
+            int top = maxHeap.top();
+            maxHeap.pop();
+            
+            unordered_map<int,int> :: iterator itr;
+            
+            for(itr=uniqueEleFreq.begin();itr!=uniqueEleFreq.end();itr++)
+            {
+                if(itr->second == top)
+                {
+                    topKElements.push_back(itr->first);
+                    uniqueEleFreq.erase(itr->first);
+                    start++;
+                    break;
+                }
+            }
+            
+            
+        }
+        
+        return topKElements;
+    }
+};
