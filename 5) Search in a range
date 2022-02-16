@@ -1,0 +1,63 @@
+class Solution {
+public:
+    
+    int binarySearchAlgo(vector<int> &nums,int low,int high,int target)
+    {
+        //Base Case
+        if(low>high){
+            return -1;
+        }
+        
+        int mid = (low+(high-low)/2);
+        
+        if(nums[mid]==target){
+            return mid;
+        }else if(nums[mid]>target){
+            return binarySearchAlgo(nums,low,mid-1,target);
+        }
+        
+        return binarySearchAlgo(nums,mid+1,high,target);
+    }
+    
+    
+    vector<int> searchRange(vector<int>& nums, int target) {
+        
+        vector<int> rangeResult;
+        
+        if(nums.size()==0){
+            rangeResult.push_back(-1);
+            rangeResult.push_back(-1);
+            
+            return rangeResult;
+        }
+        
+        
+        int targetIndex = binarySearchAlgo(nums,0,nums.size()-1,target);
+        
+        
+        if(targetIndex == -1){
+            rangeResult.push_back(-1);
+            rangeResult.push_back(-1);
+            
+            return rangeResult;
+        }
+        
+        int startIndex = targetIndex;
+        int endIndex = targetIndex;
+        
+        while(startIndex>=0 && nums[startIndex] == nums[targetIndex]){
+            --startIndex;
+        }
+        
+        while(endIndex<=nums.size()-1 && nums[targetIndex] == nums[endIndex]){
+            endIndex++;
+        }
+        
+        
+        rangeResult.push_back(startIndex+1);
+        rangeResult.push_back(endIndex-1);
+    
+        
+        return rangeResult;
+    }
+};
