@@ -1,0 +1,44 @@
+class Solution {
+public:
+    
+    
+    bool binarySearch(vector<int> &nums,int low,int high,int target)
+    {
+        if(high<low){
+            return false;
+        }
+        
+        int mid = low + (high-low)/2;
+        
+        if(nums[mid] == target){
+            return true;
+        }  
+        
+        if(nums[mid] > target){
+            return binarySearch(nums,low,mid-1,target);
+        }
+    
+        return binarySearch(nums,mid+1,high,target);
+    }
+    
+    
+    
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        
+        for(int i=0;i<matrix.size();i++){
+        
+            bool foundTarget = binarySearch(matrix[i],0,matrix[i].size()-1,target);
+            
+            if(foundTarget){
+                return true;
+            }
+            
+            // Using binary search in stl
+            // if(binary_search(matrix[i].begin(),matrix[i].end(),target)){
+            //     return true;
+            // }
+        }
+        
+        return false;
+    }
+};
