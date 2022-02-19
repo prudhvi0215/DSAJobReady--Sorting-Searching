@@ -1,71 +1,30 @@
-// Solution need to be updated in order to handle the edge cases
-
 class Solution {
 public:
     vector<vector<int>> merge(vector<vector<int>>& nums) {
         
-        vector<vector<int>> result;
+        vector<vector<int>> mergeIntervals;
         
         if(nums.size()==0){
-            return result;
+            return mergeIntervals;
         }
         
-        if(nums.size()==1){
-            vector<int> pair;
-            pair.push_back(nums[0][0]);
-            pair.push_back(nums[0][1]);
-            
-            result.push_back(pair);
-            
-            return result;
-        }
+        //Sorting is must in order to find the proper intervals
+        sort(nums.begin(),nums.end());
+    
+        vector<int> tempInterval = nums[0];
         
-        vector<int> subResult;
-
-        int PreviousInterval_firstEle = nums[0][0];
-        int PreviousInterval_secondEle = nums[0][1];
-        
-        
-        if(nums[1][0] > nums[0][1]){
-            vector<vector<int>> sol;
-            sol.push_back(nums[0]);
-            sol.push_back(nums[1]);
-                
-            return sol;
-        }
-        
-
-        for(int i=1;i<nums.size();i++){
-
-            vector<int> interval = nums[i];
-
-            int currentIntervalEle_first = interval[0];
-            int currentIntervalEle_second = interval[1];
-            
-
-            if(currentIntervalEle_first <= PreviousInterval_secondEle){
-                nums[i-1][1] = currentIntervalEle_second;
-
-                PreviousInterval_firstEle = min(PreviousInterval_firstEle,currentIntervalEle_first);
-                PreviousInterval_secondEle = max(PreviousInterval_secondEle,currentIntervalEle_second);
-
-                vector<int> subResult;
-                subResult.push_back(PreviousInterval_firstEle);
-                subResult.push_back(PreviousInterval_secondEle);
-
-                result.push_back(subResult);
-            } else{
-                PreviousInterval_firstEle = nums[i][0];
-                PreviousInterval_secondEle = nums[i][1];
-
-                vector<int> subResult;
-                subResult.push_back(PreviousInterval_firstEle);
-                subResult.push_back(PreviousInterval_secondEle);
-
-                result.push_back(subResult);
+        for(int i=1;i<nums.size();i++)
+        {
+            if(nums[i][0] <= tempInterval[1]){
+                tempInterval[1] = max(tempInterval[1],nums[i][1]);
+            }else{
+                mergeIntervals.push_back(tempInterval);
+                tempInterval = nums[i];
             }
         }
-    
-        return result;
+        
+        mergeIntervals.push_back(tempInterval);
+        
+        return mergeIntervals;
     }
 };
